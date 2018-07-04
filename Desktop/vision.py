@@ -5,8 +5,21 @@ from calibration import Calibration
 from pylab import array, plot, show, axis, arange, figure, uint8 
 from vector import Vector
 
-
+## Vision class with routines for initiating a calibration and detecting a ball
+# @details
+# Vision class with routines for initiating
+# a calibration and detecting a ball. This
+# class also projects the ballPoint and setPoint onto the
+# axises of the motors in order to calculate an error.
+# This error can be used by PID systems to approriately
+# handle ball movements.
 class Vision:
+    ## Vision constructor
+    # @details
+    # Initiates all member attriutes and
+    # adds a reference to the provided
+    # videoCapture class.
+    # @param videoCapture OpenCV VideoCapture to read frames from
     def __init__(self, videoCapture):
         self.videoCapture = videoCapture
         self.redError = 0
@@ -17,19 +30,24 @@ class Vision:
         self.setPoint = Vector(0, 0)
         self.ballPoint = None
 
+    ## Sets the setPoint to calculate errors for
+    # @param v Vector to set as setpoint
     def setSetPoint(self, v):
         self.setPoint = v
 
+    ## Initiate the calibration routine
     def calibrateCamera(self):
         self.calibration = Calibration(self.videoCapture)
         self.calibration.calibrateCamera()
         self.setPoint = self.calibration.center
 
+    ## Writes the errors to the provided frame at the calibrated motor positions
     def putErrorText(self, frame):
         cv2.putText(frame, str(int(self.blueError)), (self.calibration.blueMotor + Vector(30, 0)).values, cv2.FONT_HERSHEY_SCRIPT_SIMPLEX, 0.5, (0, 0, 0)) 
         cv2.putText(frame, str(int(self.redError)), (self.calibration.redMotor + Vector(30, 0)).values, cv2.FONT_HERSHEY_SCRIPT_SIMPLEX, 0.5, (0, 0, 0)) 
         cv2.putText(frame, str(int(self.greenError)), (self.calibration.greenMotor + Vector(30, 0)).values, cv2.FONT_HERSHEY_SCRIPT_SIMPLEX, 0.5, (0, 0, 0)) 
 
+    ## Calculates the ballPoint from a frame provided by videoCapture
     def getBallPoint(self):
         ret, self.lastCapture = self.videoCapture.read()
 
@@ -52,6 +70,7 @@ class Vision:
         else:
             return False, None
 
+    ## Takes information from the ballPoint and setPoint and calculates an error
     def calculateError(self):
         self.getBallPoint()
 
@@ -68,6 +87,10 @@ class Vision:
             self.greenError = self.greenSetPointDotProduct - self.greenBallDotProduct
             self.blueError = self.blueSetPointDotProduct - self.blueBallDotProduct
 
+    ## Renders information about the scene on top of referenceFrame
+    # @details
+    # Renders infromation about the scene on top of the referenceFrame.
+    # if the referenceFrame is None, a white image is used.
     def showMotorImage(self, referenceFrame=None):
         frame = None
 
@@ -105,6 +128,7 @@ class Vision:
 
         cv2.imshow("App", frame)
 
+    ## Displays debug information
     def showDebugImages(self, src, thresholdedFrame, calibration, circles):
         cv2.circle(thresholdedFrame, calibration.blue.values, 4, (0,0,0), -1)
         cv2.circle(thresholdedFrame, calibration.green.values, 4, (0,0,0), -1)
