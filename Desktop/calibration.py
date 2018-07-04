@@ -4,15 +4,6 @@ from vector import Vector
 from pylab import array, plot, show, axis, arange, figure, uint8 
 import util
 
-class CalibrationData:
-    def __init__(self, red, green, blue):
-        self.red = red
-        self.green = green
-        self.blue = blue
-
-    def __str__(self):
-        return str(self.red) + " " + str(self.green) + " " + str(self.blue)
-
 class Calibration:
     def __init__(self, videoCapture):
         self.videoCapture = videoCapture
@@ -64,14 +55,14 @@ class Calibration:
             if valid:
                 vals.append(data)
 
-        red = vals[0].red
-        green = vals[0].green
-        blue = vals[0].blue
+        red = vals[0][0]
+        green = vals[0][1]
+        blue = vals[0][2]
 
         for v in vals:
-            red += v.red
-            green += v.green
-            blue += v.blue
+            red += v[0]
+            green += v[1]
+            blue += v[2]
 
         red = Vector(int(red.values[0] / len(vals)), int(red.values[1] / len(vals)))
         green = Vector(int(green.values[0] / len(vals)), int(green.values[1] / len(vals)))
@@ -106,7 +97,7 @@ class Calibration:
             green = Calibration.bindHoughCirclesToColorEstimation(circles, green)
             blue = Calibration.bindHoughCirclesToColorEstimation(circles, blue)
 
-        calibration = CalibrationData(red, green, blue)
+        calibration = (red, green, blue)
 
         return len(circles[0]) == 3, calibration
 
