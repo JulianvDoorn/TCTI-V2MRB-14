@@ -56,16 +56,19 @@ class Servo:
     ## Servo constructor
     # @param motorId Id of the servo motor to control via serial connection
     # @param serial Optional, serial connection to send bytes over, when none provided, a default is used
-    def __init__(self, motorId, serial=None):
+    def __init__(self, motorId, serial=None, standardOffset=0):
         self.motorId = motorId
+        self.standardOffset = standardOffset
 
         if serial is None:
-            if Servo.defaultSerial:
+            if Servo.defaultSerial is None:
                 Servo.defaultSerial = Servo.openSerial()
             
             self.serial = Servo.defaultSerial
         else:
             self.serial = serial
+
+        self.angle = None
 
     ## Sets the angle of the servo with motorId
     # @details
@@ -83,6 +86,10 @@ class Servo:
         elif self.motorId == 3:
             data[2] = 0x0C
 
-        data[3] = angle
+        data[3] = angle + self.standardOffset
 
+        self.angle = angle
         self.serial.write(data)
+
+    def getAngle(self):
+        return self.angle
