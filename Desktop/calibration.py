@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
+from vector import Vector
 from pylab import array, plot, show, axis, arange, figure, uint8 
+import util
 
 class CalibrationData:
     def __init__(self, red, green, blue):
@@ -84,7 +86,7 @@ class Calibration:
     def getCalibrationFrameData(self):
         ret, frame = self.videoCapture.read()
 
-        thresholdedFrame = Vision.preprocessImage(frame)
+        thresholdedFrame = util.preprocessImage(frame)
         ret, thresholdedFrame =  cv2.threshold(thresholdedFrame,64,255,cv2.THRESH_BINARY)
 
         red, green, blue = self.getServoPoints(thresholdedFrame)

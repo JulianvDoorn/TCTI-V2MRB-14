@@ -1,48 +1,12 @@
 import cv2
 import numpy as np
+import util
+from calibration import Calibration
 from pylab import array, plot, show, axis, arange, figure, uint8 
-
 from vector import Vector
 
+
 class Vision:
-    @staticmethod
-    def dotProductLinePoint(lineStart, lineEnd, point):
-        return (point - lineStart).inner((lineEnd - lineStart).normalize())
-
-    @staticmethod
-    def applyDotProductToLine(lineStart, lineEnd, dp):
-        unitVector = (lineEnd - lineStart).normalize()
-        v = Vector(unitVector[0] * dp, unitVector[1] * dp) + lineStart
-        return Vector(int(v[0]), int(v[1]))
-
-    @staticmethod
-    def preprocessImage(image):
-        # Image data
-        maxIntensity = 255.0 # depends on dtype of image data
-        x = arange(maxIntensity) 
-
-        # Parameters for manipulating image data
-        phi = 1
-        theta = 1
-
-        # Increase intensity such that
-        # dark pixels become much brighter, 
-        # bright pixels become slightly bright
-        newImage0 = (maxIntensity/phi)*(image/(maxIntensity/theta))**0.5
-        newImage0 = array(newImage0,dtype=uint8)
-
-        y = (maxIntensity/phi)*(x/(maxIntensity/theta))**0.5
-
-        # Decrease intensity such that
-        # dark pixels become much darker, 
-        # bright pixels become slightly dark 
-        newImage1 = (maxIntensity/phi)*(image/(maxIntensity/theta))**2
-        newImage1 = array(newImage1,dtype=uint8)
-
-        z = (maxIntensity/phi)*(x/(maxIntensity/theta))**2
-
-        return newImage1
-
     def __init__(self, videoCapture):
         self.videoCapture = videoCapture
         self.redError = 0
@@ -59,6 +23,7 @@ class Vision:
     def calibrateCamera(self):
         self.calibration = Calibration(self.videoCapture)
         self.calibration.calibrateCamera()
+        self.setPoint = self.calibration.center
 
     def putErrorText(self, frame):
         cv2.putText(frame, str(int(self.blueError)), (self.calibration.blueMotor + Vector(30, 0)).values, cv2.FONT_HERSHEY_SCRIPT_SIMPLEX, 0.5, (0, 0, 0)) 
@@ -68,7 +33,7 @@ class Vision:
     def getBallPoint(self):
         ret, self.lastCapture = self.videoCapture.read()
 
-        thresholdedFrame = Vision.preprocessImage(self.lastCapture)
+        thresholdedFrame = util.preprocessImage(self.lastCapture)
         thresholdedFrameGray = cv2.cvtColor(thresholdedFrame, cv2.COLOR_RGB2GRAY)
         ret, thresholdedFrameGray = cv2.threshold(thresholdedFrameGray, 20, 255, cv2.THRESH_BINARY)
 
@@ -79,7 +44,7 @@ class Vision:
         detector = cv2.SimpleBlobDetector_create()
         keypoints = detector.detect(dilation)
 
-        cv2.imshow("Ball blob detection", thresholdedFrameGray)
+        # cv2.imshow("Ball blob detection", thresholdedFrameGray)
 
         if len(keypoints) > 0:
             self.ballPoint = Vector(int(keypoints[0].pt[0]), int(keypoints[0].pt[1]))
@@ -90,14 +55,14 @@ class Vision:
     def calculateError(self):
         self.getBallPoint()
 
-        self.redSetPointDotProduct = Vision.dotProductLinePoint(self.calibration.redMotor, self.calibration.center, self.setPoint)
-        self.greenSetPointDotProduct = Vision.dotProductLinePoint(self.calibration.greenMotor, self.calibration.center, self.setPoint)
-        self.blueSetPointDotProduct = Vision.dotProductLinePoint(self.calibration.blueMotor, self.calibration.center, self.setPoint)
+        self.redSetPointDotProduct = util.dotProductLinePoint(self.calibration.redMotor, self.calibration.center, self.setPoint)
+        self.greenSetPointDotProduct = util.dotProductLinePoint(self.calibration.greenMotor, self.calibration.center, self.setPoint)
+        self.blueSetPointDotProduct = util.dotProductLinePoint(self.calibration.blueMotor, self.calibration.center, self.setPoint)
 
         if self.ballPoint is not None:
-            self.redBallDotProduct = Vision.dotProductLinePoint(self.calibration.redMotor, self.calibration.center, self.ballPoint)
-            self.greenBallDotProduct = Vision.dotProductLinePoint(self.calibration.greenMotor, self.calibration.center, self.ballPoint)
-            self.blueBallDotProduct = Vision.dotProductLinePoint(self.calibration.blueMotor, self.calibration.center, self.ballPoint)
+            self.redBallDotProduct = util.dotProductLinePoint(self.calibration.redMotor, self.calibration.center, self.ballPoint)
+            self.greenBallDotProduct = util.dotProductLinePoint(self.calibration.greenMotor, self.calibration.center, self.ballPoint)
+            self.blueBallDotProduct = util.dotProductLinePoint(self.calibration.blueMotor, self.calibration.center, self.ballPoint)
 
             self.redError = self.redSetPointDotProduct - self.redBallDotProduct
             self.greenError = self.greenSetPointDotProduct - self.greenBallDotProduct
@@ -130,13 +95,13 @@ class Vision:
         if self.ballPoint is not None:
             cv2.circle(frame, self.ballPoint.values, 10, (255,255,0), -1)
 
-            cv2.line(frame, self.ballPoint.values, self.applyDotProductToLine(self.calibration.blueMotor, self.calibration.center, self.blueBallDotProduct).values, (255,0,255), 1, cv2.LINE_AA)
-            cv2.line(frame, self.ballPoint.values, self.applyDotProductToLine(self.calibration.redMotor, self.calibration.center, self.redBallDotProduct).values, (255,0,255), 1, cv2.LINE_AA)
-            cv2.line(frame, self.ballPoint.values, self.applyDotProductToLine(self.calibration.greenMotor, self.calibration.center, self.greenBallDotProduct).values, (255,0,255), 1, cv2.LINE_AA)
+            cv2.line(frame, self.ballPoint.values, util.applyDotProductToLine(self.calibration.blueMotor, self.calibration.center, self.blueBallDotProduct).values, (255,0,255), 1, cv2.LINE_AA)
+            cv2.line(frame, self.ballPoint.values, util.applyDotProductToLine(self.calibration.redMotor, self.calibration.center, self.redBallDotProduct).values, (255,0,255), 1, cv2.LINE_AA)
+            cv2.line(frame, self.ballPoint.values, util.applyDotProductToLine(self.calibration.greenMotor, self.calibration.center, self.greenBallDotProduct).values, (255,0,255), 1, cv2.LINE_AA)
 
-        cv2.line(frame, self.setPoint.values, self.applyDotProductToLine(self.calibration.blueMotor, self.calibration.center, self.blueSetPointDotProduct).values, (0, 128, 255), 1, cv2.LINE_AA)
-        cv2.line(frame, self.setPoint.values, self.applyDotProductToLine(self.calibration.redMotor, self.calibration.center, self.redSetPointDotProduct).values, (0, 128, 255), 1, cv2.LINE_AA)
-        cv2.line(frame, self.setPoint.values, self.applyDotProductToLine(self.calibration.greenMotor, self.calibration.center, self.greenSetPointDotProduct).values, (0, 128, 255), 1, cv2.LINE_AA)
+        cv2.line(frame, self.setPoint.values, util.applyDotProductToLine(self.calibration.blueMotor, self.calibration.center, self.blueSetPointDotProduct).values, (0, 128, 255), 1, cv2.LINE_AA)
+        cv2.line(frame, self.setPoint.values, util.applyDotProductToLine(self.calibration.redMotor, self.calibration.center, self.redSetPointDotProduct).values, (0, 128, 255), 1, cv2.LINE_AA)
+        cv2.line(frame, self.setPoint.values, util.applyDotProductToLine(self.calibration.greenMotor, self.calibration.center, self.greenSetPointDotProduct).values, (0, 128, 255), 1, cv2.LINE_AA)
 
         cv2.imshow("App", frame)
 
@@ -163,4 +128,6 @@ class Vision:
         cv2.imshow("Source", src)
         cv2.imshow("Thresholded", thresholdedFrame)
 
+    def getErrors(self):
+        return self.redError, self.greenError, self.blueError
     
