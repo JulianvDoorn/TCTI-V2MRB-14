@@ -82,8 +82,13 @@ class Calibration:
         for i in range(100):
             valid, data = self.getCalibrationFrameData()
 
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
             if valid:
                 vals.append(data)
+
+        cv2.destroyWindow("Calibration")
 
         red = vals[0][0]
         green = vals[0][1]
@@ -111,7 +116,9 @@ class Calibration:
     # and tries to identify the servo stickers on the frame.
     # A status boolean is returned whether the servo stickers
     # are estimated to be correctly identified alongside the
-    # sticker locations.
+    # sticker locations. Opens an OpenCV window named "Calibration"
+    # you can use cv2.destroyWindow("Calibration") to close
+    # this window once calibration was completed.
     # @return True Servos are likely correctly detected
     # @return False Servos are likely not correctly detected
     # @return (RedServo, GreenServo, BlueServo) Tuple containing the locations of the identified servos
@@ -133,14 +140,37 @@ class Calibration:
         circles = cv2.HoughCircles(thresholdedFrameGray, cv2.HOUGH_GRADIENT,4,50,
                                     param1=50,param2=30,minRadius=0,maxRadius=30)
 
-        if len(circles[0]) == 3:
+        if circles is not None and len(circles[0]) == 3:
             red = Calibration.bindHoughCirclesToColorEstimation(circles, red)
             green = Calibration.bindHoughCirclesToColorEstimation(circles, green)
             blue = Calibration.bindHoughCirclesToColorEstimation(circles, blue)
 
-        calibration = (red, green, blue)
+            cv2.circle(thresholdedFrame, red.values, 4, (0,0,0), -1)
+            cv2.circle(thresholdedFrame, green.values, 4, (0,0,0), -1)
+            cv2.circle(thresholdedFrame, blue.values, 4, (0,0,0), -1)
 
-        return len(circles[0]) == 3, calibration
+            middlePoint = red + green + blue
+            middlePoint = Vector(int(middlePoint.values[0] / 3), int(middlePoint.values[1] / 3))
+
+            cv2.circle(thresholdedFrame, middlePoint.values, 4, (0,0,255), -1)
+
+            cv2.line(thresholdedFrame, red.values, middlePoint.values, (0,0,255), 1, cv2.LINE_AA)
+            cv2.line(thresholdedFrame, green.values, middlePoint.values, (0,255,0), 1, cv2.LINE_AA)
+            cv2.line(thresholdedFrame, blue.values, middlePoint.values, (255,0,0), 1, cv2.LINE_AA)
+
+            if circles is not None:
+                circles = np.uint16(np.around(circles))
+                for i in circles[0,:]:
+                    cv2.circle(thresholdedFrame,(i[0],i[1]),i[2],(0,255,0),2)
+                    cv2.circle(thresholdedFrame,(i[0],i[1]),2,(0,0,0),3)
+
+            cv2.imshow("Calibration", thresholdedFrame)
+
+            calibration = (red, green, blue)
+
+            return len(circles[0]) == 3, calibration
+        else:
+            return False, (Vector(0, 0), Vector(0, 0), Vector(0, 0))
 
     ## Binds the closest hough circle to the estimated position
     # @details
