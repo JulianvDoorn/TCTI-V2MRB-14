@@ -1,6 +1,8 @@
 # PvA Tri-Servo Platform Practicum
 De scope van dit practicum richt zich op het controleren van de positie van een bal in een 2D ruimte. Deze 2D ruimte stelt een plaat voor wat aan de hand van servomotoren kan worden gekanteld. Aan de hand van PID worden de graden berekend en kan er een erg precies systeem worden ontwikkeld.
+
 Het lokaliseren van de bal op de platform zal worden gedaan met gebruik van een webcam. Deze webcam staat op een statief gemonteerd en is haaks op het _tri-servo platform_ gericht. Dan kan er aan de hand van vision algoritmes de bal worden herkend.
+
 Dit past goed bij de cursus _Meten, regelen en besturen_, want alle drie de aspecten komen voor in dit practicum. (Meten: vision algoritme, regelen: PID berekening, besturen: servo motoren)
 
 ## MoSCoW
