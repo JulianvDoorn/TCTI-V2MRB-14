@@ -21,8 +21,21 @@ class TriServoPlatform {
 	Servo& servo2;
 
 public:
+	/**
+	 * @brief Construct a TriServoPlatform with the given Servo references
+	 * 
+	 * @param s0 Servo to use as servo0
+	 * @param s1 Servo to use as servo1
+	 * @param s2 Servo to use as servo2
+	 */
 	TriServoPlatform(Servo& s0, Servo& s1, Servo& s2);
 
+	/**
+	 * @brief Sets the angle of the servo provided as template argument
+	 * 
+	 * @tparam SERVO_ID Servo to set the angle for
+	 * @param angle Angle for the servo to turn to
+	 */
 	template<uint32_t SERVO_ID>
 	void setAngle(const uint8_t angle) {
 		if (SERVO_ID == 0) {
@@ -34,6 +47,12 @@ public:
 		}
 	}
 
+	/**
+	 * @brief Assignment operator for TriServoPlatform
+	 * 
+	 * @param other TriServoPlatform to copy references from
+	 * @return TriServoPlatform& TriServoPlatform reference to 'this'
+	 */
 	TriServoPlatform& operator= (const TriServoPlatform& other);
 };
 

@@ -22,12 +22,38 @@ class SerialDecoder {
 	TriServoPlatform* triServoPlatform;
 
 public:
+	/**
+	 * @brief Construct a nulled SerialDecoder
+	 * 
+	 * @details
+	 * Constructs a SerialDecoder with all pointers set to nullptr
+	 */
 	SerialDecoder();
 
+	/**
+	 * @brief Construct a SerialDecoder with a Stream and TriServoPlatform
+	 * 
+	 * @param s Stream to decode serial data from
+	 * @param triServoPlatform Actuator platform to decode data for
+	 */
 	SerialDecoder(Stream& s, TriServoPlatform& triServoPlatform);
 
+	/**
+	 * @brief Dequeues data from the stream, aught to be called in void loop()
+	 * 
+	 * @details
+	 * Waits for start byte 0xAA and then for two data bytes. The first byte
+	 * containing the selected servo on the TriServoPlatform and the second
+	 * byte containing the desired angle to turn the selected servo towards.
+	 */
 	void loop();
 
+	/**
+	 * @brief Assignment operator for SerialDecoder
+	 * 
+	 * @param other SerialDecoder to copy the new references from
+	 * @return SerialDecoder& SerialDecoder reference to 'this'
+	 */
 	SerialDecoder& operator= (const SerialDecoder& other);
 };
 

@@ -26,6 +26,14 @@ Servo servo1;
 Servo servo2;
 TriServoPlatform triServoPlatform(servo0, servo1, servo2);
 
+/**
+ * @brief Sets up the constants required to control the TriServoPlatform
+ * 
+ * @details
+ * Opens a serial connection with a baud rate of 115200 and then attaches three
+ * servos to pin 9, 10 and 11. Once the servo controllers are attached to the
+ * pins the servos on the TriServoPlatform are set to the servoNullPosition. 
+ */
 void setup() {
 	Serial.begin(115200);
 	serialDecoder = SerialDecoder(Serial, triServoPlatform);
@@ -41,6 +49,9 @@ void setup() {
 	triServoPlatform.setAngle<2>(servoNullPosition);
 }
 
+/**
+ * @brief Calls serialDecoder.loop() every cycle
+ */
 void loop() {
 	serialDecoder.loop();
 }
