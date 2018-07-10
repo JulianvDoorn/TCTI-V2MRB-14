@@ -89,16 +89,16 @@ class Servo:
     # check so that check is not executed by this function.
     # @param angle Angle to set the servo to
     def setAngle(self, angle):
-        data = [0xAA, 0x01, 0x00, 0x00]
+        data = [0xAA, 0x00, 0x00]
 
         if self.motorId == 1:
-            data[2] = 0x0A
+            data[1] = 0x0A
         elif self.motorId == 2:
-            data[2] = 0x0B
+            data[1] = 0x0B
         elif self.motorId == 3:
-            data[2] = 0x0C
+            data[1] = 0x0C
 
-        data[3] = angle + self.standardOffset
+        data[2] = angle + self.standardOffset
 
         self.angle = angle
         self.serial.write(data)
