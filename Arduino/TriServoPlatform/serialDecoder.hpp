@@ -17,6 +17,17 @@
 
 #include "triServoPlatform.hpp"
 
+/**
+ * @brief Takes serial commands and turns them into actions
+ * 
+ * @details
+ * Takes serial commands and turns them into actions. This is done by
+ * constantly polling the provided stream by the constructor. The polling is
+ * done by calling loop() frequently enough to read the stream's queue.
+ * It decodes a servo id and angle and sends them to the TriServoPlatform
+ * also provided by the constructor. The default constructor puts the stream
+ * and triServoPlatform pointer to null.
+ */
 class SerialDecoder {
 	Stream* stream;
 	TriServoPlatform* triServoPlatform;

@@ -15,6 +15,14 @@
 
 #include <Servo.h>
 
+/**
+ * @brief Controls the provided servos using an id and angle
+ * 
+ * @details
+ * Controls the provided servo using an id and angle. Range checking is done
+ * by the Arduino's standard Servo class. The selected servo is passed as an
+ * template argument of the setAngle<SERVO_ID> function.
+ */
 class TriServoPlatform {
 	Servo& servo0;
 	Servo& servo1;
