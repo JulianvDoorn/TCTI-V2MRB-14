@@ -18,10 +18,10 @@ class PID:
     def applyPID(self, servo, error):
         nullAngle = 20
 
-        Kp=3.0
-        Ki=1.0
-        Kd=4.0
-        windupGuard = 5
+        Kp=8.0
+        Ki=3.0
+        Kd=14.0
+        windupGuard = 8
 
         self.currentTime = time.time()
         deltaTime = self.currentTime - self.lastTime
