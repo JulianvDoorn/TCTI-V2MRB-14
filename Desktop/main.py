@@ -18,15 +18,6 @@ if __name__ == "__main__":
     cv2.namedWindow("App", cv2.WINDOW_AUTOSIZE)
     cv2.setMouseCallback("App", mouseCallback)
 
-    x = 118
-    y = 30
-    h = 400
-    w = 400
-
-    cap = cv2.VideoCapture(1)
-    vision = Vision(FocusedVideoCapture(cap, x, y, h, w))
-
-
     servo1 = Servo(1, None) # green
     servo2 = Servo(2, None, 7) # blue
     servo3 = Servo(3, None, 4) # red
@@ -34,6 +25,12 @@ if __name__ == "__main__":
     servo1.setAngle(20)
     servo2.setAngle(20)
     servo3.setAngle(20)
+
+    cap = cv2.VideoCapture(1)
+    focusedVideoCapture = FocusedVideoCapture(cap)
+    focusedVideoCapture.calibrateFocus()
+
+    vision = Vision(focusedVideoCapture)
 
     vision.calibrateCamera()
 
