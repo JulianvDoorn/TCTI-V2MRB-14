@@ -42,4 +42,6 @@ void SerialDecoder::loop() {
 SerialDecoder& SerialDecoder::operator= (const SerialDecoder& other) {
     stream = other.stream;
     triServoPlatform = other.triServoPlatform;
+
+    return *this;
 }

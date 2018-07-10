@@ -18,4 +18,6 @@ TriServoPlatform& TriServoPlatform::operator= (const TriServoPlatform& other) {
     servo0 = other.servo0;
     servo1 = other.servo1;
     servo2 = other.servo2;
+
+    return *this;
 }
