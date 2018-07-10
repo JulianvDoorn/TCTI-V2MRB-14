@@ -5,36 +5,22 @@ Dit past goed bij de cursus _Meten, regelen en besturen_, want alle drie de aspe
 
 ## MoSCoW
 ### Must have
-- 11 - Werkbare PID
-PID integratie met werkbare afstelling waarbij de bal uiteindelijk wel op zijn plek komt
-- 12 - Bal detectie
-Vision algoritme voor bal detectie.
-- 13 - Error bepaling
-Error bepaling op drie assen. Het platform kent drie motoren, dus voor elke motor moet er een error worden bepaald om PID te kunnen regelen.
-- 14 - Hardcoded beeldafkapping
-De focus frame van de webcam zit altijd op dezelfde plek. De focus frame zorgt ervoor dat de vision algoritmes optimaal presteren.
-- 15 - Hardcoded motor lokalisatie
-Motor posities zitten altijd op dezelfde plek.
-- 16 - Hardcoded SetPoint
-Het systeem wilt de bal altijd naar het midden toe brengen.
-- 17 - Servo aansturing
-Het systeem moet aan de hand van actuators de bal in een richting kunnen bewegen.
+- __11 - Werkbare PID__ PID integratie met werkbare afstelling waarbij de bal uiteindelijk wel op zijn plek komt
+- __12 - Bal detectie__ Vision algoritme voor bal detectie.
+- __13 - Error bepaling__ Error bepaling op drie assen. Het platform kent drie motoren, dus voor elke motor moet er een error worden bepaald om PID te kunnen regelen.
+- __14 - Hardcoded beeldafkapping__ De focus frame van de webcam zit altijd op dezelfde plek. De focus frame zorgt ervoor dat de vision algoritmes optimaal presteren.
+- __15 - Hardcoded motor lokalisatie__ Motor posities zitten altijd op dezelfde plek.
+- __16 - Hardcoded SetPoint__ Het systeem wilt de bal altijd naar het midden toe brengen.
+- __17 - Servo aansturing__ Het systeem moet aan de hand van actuators de bal in een richting kunnen bewegen.
 ### Should have
-- 21 - Vlugge PID
-PID integratie met een vlugge afstelling, de bal komt snel dichtbij. De steady state error detection (integraal) zal uiteindelijk de laatste correctie doen.
-- 24 - Handmatige beeldafkapping
-Handmatig ingestelde beeldafkapping van de webcam on de vision algoritmes optimaal te laten werken. Bij opstarten wordt het vlak door de gebruiker ingevoerd.
-- 25 - Handmatige motor lokalisatie
-Handmatig ingestelde motor posities relatief aan het focuspunt van de webcam. Bij opstarten worden de punten door de gebruiker ingevoerd.
-- 26 - Handmatige SetPoint
-Handmatig ingestelde SetPoint, de gebruiker kan op een venster klikken waar de SetPoint is.
+- __21 - Vlugge PID__ PID integratie met een vlugge afstelling, de bal komt snel dichtbij. De steady state error detection (integraal) zal uiteindelijk de laatste correctie doen.
+- __24 - Handmatige beeldafkapping__ Handmatig ingestelde beeldafkapping van de webcam on de vision algoritmes optimaal te laten werken. Bij opstarten wordt het vlak door de gebruiker ingevoerd.
+- __25 - Handmatige motor lokalisatie__ Handmatig ingestelde motor posities relatief aan het focuspunt van de webcam. Bij opstarten worden de punten door de gebruiker ingevoerd.
+- __26 - Handmatige SetPoint__ Handmatig ingestelde SetPoint, de gebruiker kan op een venster klikken waar de SetPoint is.
 ### Could have
-- 31 - Perfecte PID
-PID integratie met een onmiddellijke reactie en hoge precisie. De bal word meteen naar de setpoint gebracht en zal geen zichtbare steady state error hebben.
-- 34 - Automatische beeldafkapping
-Automatische beeldafkapping van de webcam tijdens opstarten.
-- 35 - Automatische motor lokalisatie
-Automatische lokalisering van de motors tijdens opstarten.
+- __31 - Perfecte PID__ PID integratie met een onmiddellijke reactie en hoge precisie. De bal word meteen naar de setpoint gebracht en zal geen zichtbare steady state error hebben.
+- __34 - Automatische beeldafkapping__ Automatische beeldafkapping van de webcam tijdens opstarten.
+- __35 - Automatische motor lokalisatie__ Automatische lokalisering van de motors tijdens opstarten.
 
 ## Planning en communicatie
 ### Planning
