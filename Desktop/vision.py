@@ -62,7 +62,7 @@ class Vision:
         detector = cv2.SimpleBlobDetector_create()
         keypoints = detector.detect(dilation)
 
-        # cv2.imshow("Ball blob detection", thresholdedFrameGray)
+        cv2.imshow("Ball blob detection", thresholdedFrameGray)
 
         if len(keypoints) > 0:
             self.ballPoint = Vector(int(keypoints[0].pt[0]), int(keypoints[0].pt[1]))
