@@ -152,6 +152,8 @@ class Vision:
         cv2.imshow("Source", src)
         cv2.imshow("Thresholded", thresholdedFrame)
 
+    ## Returns redError, greenError and blueError in a tuple
+    # @return (redError, greenError, blueError)
     def getErrors(self):
         return self.redError, self.greenError, self.blueError
     
