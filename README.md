@@ -32,7 +32,8 @@ De functionaliteit van de hard- en software staan hieronder beschreven, deze zij
 
 ### Pin Layout Diagram
 
-![Drie Servos en Arduino](https://raw.githubusercontent.com/JulianvDoorn/TCTI-V2MRB-14/master/Img/HardwareLayout.png)
+![Drie Servos en Arduino](https://raw.githubusercontent.com/JulianvDoorn/TCTI-V2MRB-14/master/Img/HardwareLayout.png)<br>
+<sub>Pinlayout</sub>
 In het bovenstaande diagram staat beschreven hoe de Arduino Due is verbonden met de drie servomotoren en hoe de servomotoren aan de voeding is aangesloten.
 
 Het staat niet gemodelleerd in het schema maar de Arduino krijgt zijn voeding van de PC doormiddel van een USB. Tevens wordt er met deze USB verbinding gecommuniceerd met de PID software. Overigens moet de USB webcam ook aangesloten zijn aan de PC.
@@ -49,7 +50,7 @@ Het staat niet gemodelleerd in het schema maar de Arduino krijgt zijn voeding va
 Wanneer alle hardware gereed staat, kan de software worden geïnstalleerd. De software is doet in principe heel veel zelf wanneer de webcam op het bewegende platform staat gericht. Het is belangrijk dat alle stickers herkenbaar voor de webcam zijn.
 
 #### Vision
-![Platform met stickers](https://raw.githubusercontent.com/JulianvDoorn/TCTI-V2MRB-14/master/Img/PlatformPlate.jpg)
+![Platform met stickers](https://raw.githubusercontent.com/JulianvDoorn/TCTI-V2MRB-14/master/Img/PlatformPlate.jpg)<br>
 <sup>Foto van de plaat, hoe de webcam het zou moeten zien</sup>
 
 Dit is hoe onze plaat eruit ziet voor onze webcam. Het is van belang dat de stickers rond zijn en gekleurd in dezelfde kleuren als hierboven. De software filtert namelijk alle kleuren eruit behalve, bijvoorbeeld, rood. Wanneer dit is gedaan voert het stickerherkenning uit. 
@@ -61,7 +62,7 @@ Voordat het allemaal werkt moet eerst nog de Arduino worden geflashed met de cod
 
 ### Class Diagram
 
-![Class diagram](https://raw.githubusercontent.com/JulianvDoorn/TCTI-V2MRB-14/master/Img/ClassDiagram.png)
+![Class diagram](https://raw.githubusercontent.com/JulianvDoorn/TCTI-V2MRB-14/master/Img/ClassDiagram.png)<br>
 <sup>Klassediagram van de Python software</sup>
 
 | Element       | Description   |
@@ -75,5 +76,5 @@ Voordat het allemaal werkt moet eerst nog de Arduino worden geflashed met de cod
 
 ### PID Loop
 
-![PID Feedback Loop](https://raw.githubusercontent.com/JulianvDoorn/TCTI-V2MRB-14/master/Img/PIDLoop.png)
+![PID Feedback Loop](https://raw.githubusercontent.com/JulianvDoorn/TCTI-V2MRB-14/master/Img/PIDLoop.png)<br>
 <sup>Diagram van de PID feedback lus</sup>
