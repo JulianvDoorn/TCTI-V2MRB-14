@@ -32,7 +32,7 @@ De functionaliteit van de hard- en software staan hieronder beschreven, deze zij
 
 ### Pin Layout Diagram
 
-![Drie Servos en Arduino](https://raw.githubusercontent.com/JulianvDoorn/TCTI-V2MRB-14/master/HardwareLayout.png)
+![Drie Servos en Arduino](https://raw.githubusercontent.com/JulianvDoorn/TCTI-V2MRB-14/master/Img/HardwareLayout.png)
 In het bovenstaande diagram staat beschreven hoe de Arduino Due is verbonden met de drie servomotoren en hoe de servomotoren aan de voeding is aangesloten.
 
 Het staat niet gemodelleerd in het schema maar de Arduino krijgt zijn voeding van de PC doormiddel van een USB. Tevens wordt er met deze USB verbinding gecommuniceerd met de PID software. Overigens moet de USB webcam ook aangesloten zijn aan de PC.
