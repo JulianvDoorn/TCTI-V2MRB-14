@@ -72,3 +72,8 @@ Voordat het allemaal werkt moet eerst nog de Arduino worden geflashed met de cod
 | PID Class | Dit is het regelende component van dit systeem. Instances van PID kennen drie servo's en bevat een 'update' functie die de servo's update aan de hand van de ontvangen errors. |
 | Servo Class | Dit is het regelende deel van het systeem. Het is gespecialiseerd voor het sturen van commando's naar de Arduino. Elke servo instance bestuurd maar een servo, maar de daadwerkelijke controller kent er maar liefst drie. Daarom moet er de seriële verbinding tussen instances worden gedeeld. Tenzij het geëxpliciteerd is dat verschillende servo's andere seriële poorten gebruiken. |
 | MainLoop | In de daadwerkelijke software, is MainLoop niet een class. Maar voor het nut van een class diagram was het belangrijk om dit component de modelleren. Het nut van de MainLoop is om het PID gedeelte en het Vision gedeelte samen te voegen. |
+
+### PID Loop
+
+![PID Feedback Loop](https://raw.githubusercontent.com/JulianvDoorn/TCTI-V2MRB-14/master/Img/PIDLoop.png)
+<sup>Diagram van de PID feedback lus</sup>
