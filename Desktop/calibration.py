@@ -145,10 +145,6 @@ class Calibration:
         thresholdedFrameGray = cv2.cvtColor(thresholdedFrame, cv2.COLOR_RGB2GRAY)
         ret, thresholdedFrameGray = cv2.threshold(thresholdedFrameGray,200,255,cv2.THRESH_BINARY)
 
-        kernel = np.ones((5,5),np.uint8)
-        dilation = cv2.dilate(thresholdedFrameGray,kernel,iterations = 1)
-        erosion = cv2.erode(thresholdedFrameGray,kernel,iterations = 1)
-
         circles = cv2.HoughCircles(thresholdedFrameGray, cv2.HOUGH_GRADIENT,4,50,
                                     param1=50,param2=30,minRadius=0,maxRadius=30)
 
