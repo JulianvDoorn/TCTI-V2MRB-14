@@ -35,11 +35,40 @@ De functionaliteit van de hard- en software staan hieronder beschreven, deze zij
 ![Drie Servos en Arduino](https://raw.githubusercontent.com/JulianvDoorn/TCTI-V2MRB-14/master/HardwareLayout.png)
 In het bovenstaande diagram staat beschreven hoe de Arduino Due is verbonden met de drie servomotoren en hoe de servomotoren aan de voeding is aangesloten.
 
-Het staat niet gemodelleerd in het schema maar de Arduino krijgt zijn voeding van de PC doormiddel van een USB. Tevens wordt er met deze USB verbinding gecommuniceerd met de PID software. 
+Het staat niet gemodelleerd in het schema maar de Arduino krijgt zijn voeding van de PC doormiddel van een USB. Tevens wordt er met deze USB verbinding gecommuniceerd met de PID software. Overigens moet de USB webcam ook aangesloten zijn aan de PC.
 
 ## Software dependencies
 
-- Arduino Toolchain
+- Arduino IDE/Toolchain
 - Python 3
 - OpenCV (voor Python 3)
 - Numpy
+
+### Install and user Guide
+
+Wanneer alle hardware gereed staat, kan de software worden geïnstalleerd. De software is doet in principe heel veel zelf wanneer de webcam op het bewegende platform staat gericht. Het is belangrijk dat alle stickers herkenbaar voor de webcam zijn.
+
+#### Vision
+![Platform met stickers](https://raw.githubusercontent.com/JulianvDoorn/TCTI-V2MRB-14/master/Img/PlatformPlate.jpg)
+<sup>Foto van de plaat, hoe de webcam het zou moeten zien</sup>
+
+Dit is hoe onze plaat eruit ziet voor onze webcam. Het is van belang dat de stickers rond zijn en gekleurd in dezelfde kleuren als hierboven. De software filtert namelijk alle kleuren eruit behalve, bijvoorbeeld, rood. Wanneer dit is gedaan voert het stickerherkenning uit. 
+
+De webcam moet verbonden zijn met de 1<sup>e</sup> (niet de 0<sup>e</sup>) virtuele webcam poort. Dit kan in main.py worden aangepast bij `cap = cv2.VideoCapture(1)`. Dit komt omdat de laptop waar het al op was ontwikkeld een webcam op de 0<sup>e</sup> webcam heeft.
+
+#### Arduino
+Voordat het allemaal werkt moet eerst nog de Arduino worden geflashed met de code dat de servomotoren aanstuurd aan de hand van seriele commando's. De sketch kan je vinden in het mapje `Arduino/`. Deze sketch kan je met de Arduino IDE uploaden naar je Arduino. Wanneer dit is gedaan heb je de Arduino IDE niet meer nodig.
+
+### Class Diagram
+
+![Class diagram](https://raw.githubusercontent.com/JulianvDoorn/TCTI-V2MRB-14/master/Img/ClassDiagram.png)
+<sup>Klassediagram van de Python software</sup>
+
+| Element       | Description   |
+| :-----------: |---------------|
+| Vision Class | Dit is het metende gedeelde van het systeem. Het gebruik verschillende algoritmes en een instantie van Calibration om errors te berekenen die bruikbaar zijn voor een PID regelaar. |
+| Calibration Class | Bevat subroutines om aan de hand van een video stream de motors te lokaliseren en een middelpunt te berekenen. Wanneer een instantie zich heeft gekalibreerd kan een instantie van Vision gebruik maken van de kalibratie. |
+| FocusedVideoCapture Class | Dit is een wrapper class de VideoCapture uit OpenCV. Deze class runt nog een _crop_ operatie over de frame die uit VideoCapture.read() komt. Dit is bruikbaar voor het optimaliseren van de vision algoritmes.  |
+| PID Class | Dit is het regelende component van dit systeem. Instances van PID kennen drie servo's en bevat een 'update' functie die de servo's update aan de hand van de ontvangen errors. |
+| Servo Class | Dit is het regelende deel van het systeem. Het is gespecialiseerd voor het sturen van commando's naar de Arduino. Elke servo instance bestuurd maar een servo, maar de daadwerkelijke controller kent er maar liefst drie. Daarom moet er de seriële verbinding tussen instances worden gedeeld. Tenzij het geëxpliciteerd is dat verschillende servo's andere seriële poorten gebruiken. |
+| MainLoop | In de daadwerkelijke software, is MainLoop niet een class. Maar voor het nut van een class diagram was het belangrijk om dit component de modelleren. Het nut van de MainLoop is om het PID gedeelte en het Vision gedeelte samen te voegen. |
