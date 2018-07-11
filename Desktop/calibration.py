@@ -152,7 +152,7 @@ class Calibration:
         circles = cv2.HoughCircles(thresholdedFrameGray, cv2.HOUGH_GRADIENT,4,50,
                                     param1=50,param2=30,minRadius=0,maxRadius=30)
 
-        if circles is not None and len(circles[0]) == 3:
+        if circles is not None and len(circles[0]) >= 3:
             red = Calibration.bindHoughCirclesToColorEstimation(circles, red)
             green = Calibration.bindHoughCirclesToColorEstimation(circles, green)
             blue = Calibration.bindHoughCirclesToColorEstimation(circles, blue)
@@ -180,7 +180,7 @@ class Calibration:
 
             calibration = (red, green, blue)
 
-            return len(circles[0]) == 3, calibration
+            return len(circles[0]) >= 3, calibration
         else:
             return False, (Vector(0, 0), Vector(0, 0), Vector(0, 0))
 
